@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import getMonth from './utils/dayjs';
 import CalendarHeader from './components/CalendarHeader';
 import Sidebar from './components/Sidebar';
@@ -9,12 +9,17 @@ const App = () => {
   // console.table(getMonth());
   const [currentMonth, setCurrentMonth] = useState(getMonth());
   const showSidebar = useSelector((state) => state.calendar.showSidebar);
+  const monthIndex = useSelector((state) => state.calendar.monthIndex);
+
+  useEffect(() => {
+    setCurrentMonth(getMonth(monthIndex));
+  }, [monthIndex]);
 
   return (
     <>
       <div className="h-screen flex flex-col">
         <CalendarHeader />
-        <div className="flex flex-1">
+        <div className="flex flex-1 overflow-hidden">
           {showSidebar && <Sidebar />}
           <Month month={currentMonth} />
         </div>

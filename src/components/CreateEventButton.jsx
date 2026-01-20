@@ -1,5 +1,6 @@
 import React from 'react';
 import { MdAddBox } from 'react-icons/md';
+import { useDispatch } from 'react-redux';
 
 const CreateEventButton = () => {
   return (
