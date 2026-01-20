@@ -47,15 +47,15 @@ const CalendarHeader = () => {
         <div className="flex items-center ml-6 space-x-4">
           <button
             onClick={handlePrevMonth}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors group"
+            className="p-2 hover:bg-gray-100 rounded-full transition-colors group cursor-pointer"
           >
-            <FaChevronLeft className="text-gray-600 group-hover:text-blue-600 text-sm" />
+            <FaChevronLeft className="text-gray-600 group-hover:text-blue-600 text-lg" />
           </button>
           <button
             onClick={handleNextvMonth}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors group"
+            className="p-2 hover:bg-gray-100 rounded-full transition-colors group cursor-pointer"
           >
-            <FaChevronRight className="text-gray-600 group-hover:text-blue-600 text-sm" />
+            <FaChevronRight className="text-gray-600 group-hover:text-blue-600 text-lg" />
           </button>
         </div>
 
