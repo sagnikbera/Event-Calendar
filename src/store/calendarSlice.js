@@ -1,8 +1,8 @@
-import { createSlice } from "@reduxjs/toolkit";
-import dayjs from "dayjs";
+import { createSlice } from '@reduxjs/toolkit';
+import dayjs from 'dayjs';
 
 const initEvents = () => {
-  const storageEvents = localStorage.getItem("savedEvents");
+  const storageEvents = localStorage.getItem('savedEvents');
   return storageEvents ? JSON.parse(storageEvents) : [];
 };
 
@@ -17,7 +17,7 @@ const initialState = {
 };
 
 const calendarSlice = createSlice({
-  name: "calendar",
+  name: 'calendar',
   initialState,
   reducers: {
     //change month index
@@ -52,7 +52,7 @@ const calendarSlice = createSlice({
     //add new event
     pushEvent: (state, action) => {
       state.savedEvents.push(action.payload);
-      localStorage.setItem("savedEvents", JSON.stringify(state.savedEvents));
+      localStorage.setItem('savedEvents', JSON.stringify(state.savedEvents));
     },
 
     //update event
@@ -60,7 +60,7 @@ const calendarSlice = createSlice({
       state.savedEvents = state.savedEvents.map((event) => {
         return event.id === action.payload.id ? action.payload : event;
       });
-      localStorage.setItem("savedEvents", JSON.stringify(state.savedEvents));
+      localStorage.setItem('savedEvents', JSON.stringify(state.savedEvents));
     },
 
     //delete event
@@ -68,27 +68,29 @@ const calendarSlice = createSlice({
       state.savedEvents = state.savedEvents.filter((event) => {
         return event.id !== action.payload.id;
       });
-      localStorage.setItem("savedEvents", JSON.stringify(state.savedEvents));
+      localStorage.setItem('savedEvents', JSON.stringify(state.savedEvents));
     },
 
     //!TODO: Lebel
     //list unique label from events
     setLabels: (state) => {
-        const uniqueLabels = [...new Set(state.savedEvents.map((event) => event.label))];
-        state.labels = uniqueLabels.map((label) => {
-            const currentLabel = state.labels.find((lbl) => lbl.label === label);
-            return {
-                label ,
-                checked: currentLabel ? currentLabel.checked : true,
-            }
-        })
+      const uniqueLabels = [
+        ...new Set(state.savedEvents.map((event) => event.label)),
+      ];
+      state.labels = uniqueLabels.map((label) => {
+        const currentLabel = state.labels.find((lbl) => lbl.label === label);
+        return {
+          label,
+          checked: currentLabel ? currentLabel.checked : true,
+        };
+      });
     },
 
     //check uncheck label
     updateLabel: (state, action) => {
-        state.labels = state.labels.map((lbl) => {
-            return lbl.label === action.payload.label ? action.payload : lbl;
-        })
+      state.labels = state.labels.map((lbl) => {
+        return lbl.label === action.payload.label ? action.payload : lbl;
+      });
     },
   },
 });
