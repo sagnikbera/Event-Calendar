@@ -2,28 +2,37 @@ import React, { useState } from 'react';
 import { MdDragHandle } from 'react-icons/md';
 import { MdClose } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
-import { pushEvent, toggleEventModal } from '../store/calendarSlice';
+import {
+  pushEvent,
+  toggleEventModal,
+  updateEvent,
+} from '../store/calendarSlice';
 import { MdOutlineSchedule } from 'react-icons/md';
 import { RiMenu3Fill } from 'react-icons/ri';
 import { FaRegBookmark } from 'react-icons/fa';
 import dayjs from 'dayjs';
-import { TiTick } from 'react-icons/ti';
 import { SiTicktick } from 'react-icons/si';
 
 const labelsClasses = [
-  'bg-indigo-500',
+  'bg-indigo-400',
   'bg-gray-500',
   'bg-green-600',
-  'bg-blue-500',
-  'bg-red-500',
+  'bg-blue-400',
+  'bg-red-400',
   'bg-purple-500',
   'bg-amber-500',
 ];
 
 const EventModal = () => {
-  const [selectedLabel, setSelectedLabel] = useState(labelsClasses[0]);
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+  const selectedEvent = useSelector((state) => state.calendar.selectedEvent);
+
+  const [selectedLabel, setSelectedLabel] = useState(
+    selectedEvent ? selectedEvent.label : labelsClasses[0]
+  );
+  const [title, setTitle] = useState(selectedEvent ? selectedEvent.title : '');
+  const [description, setDescription] = useState(
+    selectedEvent ? selectedEvent.description : ''
+  );
   const daySelected = useSelector((state) => state.calendar.daySelected);
   const dispatch = useDispatch();
 
@@ -34,11 +43,16 @@ const EventModal = () => {
       title: title,
       description: description,
       label: selectedLabel,
-      day: daySelected,
-      id: Date.now(),
+      day: selectedEvent ? selectedEvent.day : daySelected,
+      id: selectedEvent ? selectedEvent.id : Date.now(), // in case of edit id should be same
     };
 
-    dispatch(pushEvent(calendarEvent));
+    if (selectedEvent) {
+      dispatch(updateEvent(calendarEvent));
+    } else {
+      dispatch(pushEvent(calendarEvent));
+    }
+
     dispatch(toggleEventModal());
   };
   return (
@@ -92,7 +106,6 @@ const EventModal = () => {
                   className={`w-6 h-6 ${col} rounded-full cursor-pointer`}
                 >
                   {selectedLabel === col && (
-                    // <TiTick className="text-white text-2xl mx-auto" />
                     <SiTicktick className="text-gray text-2xl mx-auto" />
                   )}
                 </span>

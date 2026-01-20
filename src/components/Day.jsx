@@ -1,9 +1,25 @@
 import dayjs from 'dayjs';
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  setDaySelected,
+  setSelectedEvent,
+  toggleEventModal,
+} from '../store/calendarSlice';
 
 const Day = ({ day, rowIdx }) => {
+  const [dayEvents, setDayEvents] = useState([]);
+  const dispatch = useDispatch();
+
   const daySelected = useSelector((state) => state.calendar.daySelected);
+  const savedEvents = useSelector((state) => state.calendar.savedEvents);
+
+  useEffect(() => {
+    const events = savedEvents.filter(
+      (event) => dayjs(event.day).format('DD-MM-YY') === day.format('DD-MM-YY')
+    );
+    setDayEvents(events);
+  }, [savedEvents, day]);
 
   function getCurrentDayClass() {
     let classes = '';
@@ -37,6 +53,29 @@ const Day = ({ day, rowIdx }) => {
           {day.format('DD')}
         </p>
       </header>
+      <div
+        className="flex-1 cursor-pointer overflow-y-auto"
+        onClick={() => {
+          dispatch(setDaySelected(day.valueOf()));
+          dispatch(toggleEventModal());
+        }}
+      >
+        {dayEvents.map((event, index) => (
+          <div
+            key={index}
+            onClick={(e) => {
+              e.stopPropagation();
+              dispatch(setSelectedEvent(event));
+              dispatch(toggleEventModal());
+            }}
+            className={`${event.label} text-black p-1 mr-3 text-sm rounded mb-1 truncate font-bold`}
+          >
+            {/* { console.log(event.label)} */}
+
+            {event.title}
+          </div>
+        ))}
+      </div>
       <div className="flex-1 cursor-pointer">{/*event list*/}</div>
     </div>
   );
