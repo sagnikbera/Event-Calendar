@@ -76,7 +76,7 @@ const Day = ({ day, rowIdx }) => {
           </div>
         ))}
       </div>
-      <div className="flex-1 cursor-pointer">{/*event list*/}</div>
+      <div className="cursor-pointer">{/*event list*/}</div>
     </div>
   );
 };
