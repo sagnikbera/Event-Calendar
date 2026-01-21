@@ -16,7 +16,6 @@ const initTags = () => {
   return storageTags ? JSON.parse(storageTags) : [];
 };
 
-
 const initialState = {
   monthIndex: dayjs().month(),
   smallCalendarMonth: null,
@@ -111,7 +110,7 @@ const calendarSlice = createSlice({
     setTags: (state) => {
       const allTags = state.savedEvents.flatMap((event) => event.tags || []);
       const uniqueTags = [...new Set(allTags)];
-      
+
       state.tags = uniqueTags.map((tag) => {
         const currentTag = state.tags.find((t) => t.tag === tag);
         return {
@@ -119,11 +118,11 @@ const calendarSlice = createSlice({
           checked: currentTag ? currentTag.checked : true,
         };
       });
-      
+
       localStorage.setItem('savedTags', JSON.stringify(state.tags));
     },
 
-    // check uncheck tag 
+    // check uncheck tag
     updateTag: (state, action) => {
       state.tags = state.tags.map((t) =>
         t.tag === action.payload.tag ? action.payload : t

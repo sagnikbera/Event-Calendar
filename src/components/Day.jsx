@@ -16,25 +16,26 @@ const Day = ({ day, rowIdx }) => {
   const labels = useSelector((state) => state.calendar.labels);
   const tags = useSelector((state) => state.calendar.tags);
 
- useEffect(() => {
-  const events = savedEvents.filter((event) => {
-    const currentLabel = labels.find((lbl) => lbl.label === event.label);
+  useEffect(() => {
+    const events = savedEvents.filter((event) => {
+      const currentLabel = labels.find((lbl) => lbl.label === event.label);
 
-    const eventTags = event.tags || [];
-    const isTagVisible = eventTags.length === 0 || 
-      eventTags.some(t => {
-        const foundTag = tags.find(tagObj => tagObj.tag === t);
-        return foundTag ? foundTag.checked : true;
-      });
+      const eventTags = event.tags || [];
+      const isTagVisible =
+        eventTags.length === 0 ||
+        eventTags.some((t) => {
+          const foundTag = tags.find((tagObj) => tagObj.tag === t);
+          return foundTag ? foundTag.checked : true;
+        });
 
-    return (
-      dayjs(event.day).format('DD-MM-YY') === day.format('DD-MM-YY') &&
-      (currentLabel ? currentLabel.checked : true) &&
-      isTagVisible
-    );
-  });
-  setDayEvents(events);
-}, [savedEvents, day, labels, tags]);
+      return (
+        dayjs(event.day).format('DD-MM-YY') === day.format('DD-MM-YY') &&
+        (currentLabel ? currentLabel.checked : true) &&
+        isTagVisible
+      );
+    });
+    setDayEvents(events);
+  }, [savedEvents, day, labels, tags]);
 
   function getCurrentDayClass() {
     let classes = '';
