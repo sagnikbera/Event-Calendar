@@ -51,30 +51,33 @@ const SmallCalendar = () => {
   };
 
   return (
-    <div className="mt-9">
+    <div className="mt-9 mx-auto md:mx-0 max-w-70 md:max-w-full">
       <header className="flex justify-between px-2">
-        <p className="text-gray-500 font-bold">
+        <p className="text-gray-500 font-bold text-sm md:text-base">
           {dayjs(new Date(dayjs().year(), currMonIdx)).format('MMMM YYYY')}
         </p>
-        <div className="flex items-center ml-6 space-x-1">
+        <div className="flex items-center space-x-1">
           <button
             onClick={handlePrevMon}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors group cursor-pointer"
+            className="p-1 md:p-2 hover:bg-gray-100 rounded-full transition-colors group cursor-pointer"
           >
-            <FaChevronLeft className="text-gray-500 group-hover:text-blue-600 text-sm" />
+            <FaChevronLeft className="text-gray-500 group-hover:text-blue-600 text-xs md:text-sm" />
           </button>
           <button
             onClick={handleNextMon}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors group cursor-pointer"
+            className="p-1 md:p-2 hover:bg-gray-100 rounded-full transition-colors group cursor-pointer"
           >
-            <FaChevronRight className="text-gray-500 group-hover:text-blue-600 text-sm" />
+            <FaChevronRight className="text-gray-500 group-hover:text-blue-600 text-xs md:text-sm" />
           </button>
         </div>
       </header>
       <div className="grid grid-cols-7 grid-rows-6 mt-2 p-2">
         {/* day  */}
         {currMon[0].map((day, i) => (
-          <span key={i} className="text-sm font-bold text-center text-gray-700">
+          <span
+            key={i}
+            className="text-[10px] md:text-sm font-bold text-center text-gray-700"
+          >
             {day.format('dd').charAt(0)}
           </span>
         ))}
@@ -88,7 +91,7 @@ const SmallCalendar = () => {
                 onClick={() => handleDayClick(day)}
               >
                 <span
-                  className={`text-sm py-1 px-1.5 transition-all ${getDayClass(day)}`}
+                  className={`text-[10px] md:text-sm py-1 px-1.5 transition-all inline-block ${getDayClass(day)}`}
                 >
                   {day.format('D')}
                 </span>

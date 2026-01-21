@@ -31,9 +31,17 @@ const App = () => {
       <div className="h-screen flex flex-col">
         {showEventModal && <EventModal />}
         <CalendarHeader />
-        <div className="flex flex-1 overflow-hidden">
-          {showSidebar && <Sidebar />}
-          <Month month={currentMonth} />
+        {/* পরিবর্তন: 'flex-col md:flex-row' যোগ করা হয়েছে যাতে মোবাইলে সাইডবার উপরে থাকে এবং বড় স্ক্রিনে পাশে থাকে */}
+        <div className="flex flex-1 flex-col md:flex-row overflow-hidden">
+          {/* পরিবর্তন: সাইডবার মোবাইলে ফুল উইডথ হবে এবং বড় স্ক্রিনে নির্দিষ্ট উইডথ পাবে */}
+          {showSidebar && (
+            <div className="w-full md:w-auto h-auto md:h-full overflow-y-auto">
+              <Sidebar />
+            </div>
+          )}
+          <div className="flex-1 overflow-auto">
+            <Month month={currentMonth} />
+          </div>
         </div>
       </div>
     </>

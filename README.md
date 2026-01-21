@@ -1,16 +1,66 @@
-# React + Vite
+# X-Calendar 📅
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+X-Calendar is a modern, responsive, and feature-rich calendar application built with **React**, **Redux Toolkit**, and **Tailwind CSS**. It is inspired by the clean and intuitive user interface of Google Calendar.
 
-Currently, two official plugins are available:
+## ✨ Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Monthly View:** A beautiful 5x7 grid layout to view all your events for the month at a glance.
+- **Event Management (CRUD):** Seamlessly create, edit, and delete events.
+- **Tag & Label System:** Categorize events using color-coded labels and custom text tags.
+- **Smart Filtering:** Filter the calendar display by toggling specific labels or tags in the sidebar.
+- **Mini Calendar:** Quick navigation through months using the synchronized sidebar calendar.
+- **Local Storage Support:** Persistent data storage ensures your events and preferences are saved even after page refreshes.
+- **Fully Responsive:** Optimized for all devices—mobile, tablet, and desktop—using adaptive layouts.
 
-## React Compiler
+## 🛠 Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Frontend:** [React.js](https://reactjs.org/)
+- **State Management:** [Redux Toolkit](https://redux-toolkit.js.org/)
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+- **Date Manipulation:** [Day.js](https://day.js.org/)
+- **Icons:** [React Icons](https://react-icons.github.io/react-icons/)
 
-## Expanding the ESLint configuration
+## 🚀 Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 1. Clone the repository
+
+```bash
+git clone [https://github.com/sagnikbera/X-Calendar.git](https://github.com/sagnikbera/X-Calendar.git)
+cd x-calendar
+```
+
+### 2. Install dependencies
+
+```
+npm install
+```
+
+### 3. Run the application
+
+```
+npm start
+```
+
+## 📂 Logic : dayjs
+
+```js
+// src/utils/dayjs.js
+import dayjs from 'dayjs';
+
+export default function getMonth(month = dayjs().month()) {
+  const year = dayjs().year();
+  const firstDayOfTheMonth = dayjs(new Date(year, month, 1)).day();
+
+  let currentMonthCount = 0 - firstDayOfTheMonth;
+
+  // Create a 2D array: 5 rows (weeks) x 7 columns (days)
+  const dayMatrix = new Array(5).fill([]).map(() => {
+    return new Array(7).fill(null).map(() => {
+      currentMonthCount++;
+      return dayjs(new Date(year, month, currentMonthCount));
+    });
+  });
+
+  return dayMatrix;
+}
+```

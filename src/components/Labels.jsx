@@ -9,6 +9,11 @@ const Labels = () => {
   return (
     <React.Fragment>
       <p className="text-gray-500 font-bold mt-1">Label Filter</p>
+      {labels.length === 0 && (
+        <p className="text-xs font-semibold text-gray-400 italic">
+          No Tags Yet
+        </p>
+      )}
       {labels.map(({ label, checked }, idx) => {
         return (
           <label key={idx} className="flex items-center mt-1 Cursor-pointer">

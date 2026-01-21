@@ -56,21 +56,23 @@ const Day = ({ day, rowIdx }) => {
   }
 
   return (
-    <div className="border border-gray-200 flex flex-col">
+    <div className="border border-gray-200 flex flex-col min-h-25 md:min-h-0 h-full">
       <header className="flex flex-col items-center">
         {/* day  */}
         {rowIdx === 0 && (
-          <p className="text-sm mt-1">{day.format('ddd').toUpperCase()}</p>
+          <p className="text-xs md:text-sm mt-1">
+            {day.format('ddd').toUpperCase()}
+          </p>
         )}
         {/* date  */}
         <p
-          className={`text-sm font-semibold p-1 my-1 text-center ${getCurrentDayClass()}`}
+          className={`text-xs md:text-sm font-semibold p-1 my-1 text-center ${getCurrentDayClass()}`}
         >
           {day.format('DD')}
         </p>
       </header>
       <div
-        className="flex-1 cursor-pointer overflow-y-auto"
+        className="flex-1 cursor-pointer overflow-y-auto px-1"
         onClick={() => {
           dispatch(setDaySelected(day.valueOf()));
           dispatch(toggleEventModal());
@@ -84,10 +86,9 @@ const Day = ({ day, rowIdx }) => {
               dispatch(setSelectedEvent(event));
               dispatch(toggleEventModal());
             }}
-            className={`${event.label} text-black p-1 mr-3 text-sm rounded mb-1 truncate font-bold`}
+            className={`${event.label} text-white p-1 mr-1 text-[10px] md:text-sm rounded mb-1 truncate font-bold shadow-sm`}
           >
             {/* { console.log(event.label)} */}
-
             {event.title}
           </div>
         ))}

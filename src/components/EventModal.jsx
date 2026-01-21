@@ -86,29 +86,31 @@ const EventModal = () => {
 
     dispatch(toggleEventModal());
   };
+
   return (
-    <div className="h-screen w-full fixed left-0 top-0 flex justify-center items-center z-50 bg-black/50">
-      <form className="rounded-lg shadow-2xl w-1/4  bg-white">
-        <header className="bg-gray px-4 py-2 flex justify-between items-center">
-          {selectedEvent && (
-            <span
-              onClick={() => {
-                dispatch(deleteEvent(selectedEvent));
-                dispatch(toggleEventModal());
-              }}
-            >
-              <MdDelete className="text-2xl" />
-            </span>
-          )}
-          <span>
-            <MdDragHandle className="text-2xl" />
-          </span>
+    <div className="h-screen w-full fixed left-0 top-0 flex justify-center items-center z-50 bg-black/50 p-4">
+      <form className="rounded-lg shadow-2xl w-full max-w-lg md:w-1/4 bg-white overflow-hidden">
+        <header className="bg-gray-100 px-4 py-2 flex justify-between items-center">
+          <div className="flex items-center space-x-2">
+            {selectedEvent && (
+              <span
+                className="cursor-pointer text-gray-500 hover:text-red-500 transition-colors"
+                onClick={() => {
+                  dispatch(deleteEvent(selectedEvent));
+                  dispatch(toggleEventModal());
+                }}
+              >
+                <MdDelete className="text-2xl" />
+              </span>
+            )}
+            <MdDragHandle className="text-2xl text-gray-400 cursor-move hidden md:block" />
+          </div>
           <button type="button" onClick={() => dispatch(toggleEventModal())}>
-            <MdClose className="text-2xl" />
+            <MdClose className="text-2xl text-gray-500 hover:text-gray-800" />
           </button>
         </header>
-        <div className="p-6">
-          <div className="grid grid-cols-[1fr_5fr] items-end gap-y-7">
+        <div className="p-4 md:p-6">
+          <div className="grid grid-cols-[1fr_5fr] items-end gap-y-6 md:gap-y-7">
             {/* title  */}
             <div></div>
             <input
@@ -116,13 +118,14 @@ const EventModal = () => {
               name="title"
               placeholder="Add title"
               required
-              className="pt-3 border-0 text-gray-600 text-xl font-semibold pb-2 w-full border-b-2 border-gray-400 focus:outline-none"
+              className="pt-3 border-0 text-gray-600 text-lg md:text-xl font-semibold pb-2 w-full border-b-2 border-gray-300 focus:outline-none focus:border-blue-500"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
+
             {/* schedule */}
             <MdOutlineSchedule className="text-gray-500 text-2xl justify-self-center" />
-            <p className="text-gray-600 font-medium">
+            <p className="text-gray-600 font-medium text-sm md:text-base">
               {dayjs(daySelected).format('dddd, MMMM DD')}
             </p>
 
@@ -131,7 +134,7 @@ const EventModal = () => {
             <input
               type="text"
               placeholder="Add a description"
-              className="pt-1 font-semibold border-0 text-gray-600 pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:border-blue-500"
+              className="pt-1 font-medium border-0 text-gray-600 pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:border-blue-500 text-sm md:text-base"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
@@ -139,11 +142,11 @@ const EventModal = () => {
             {/* tag  */}
             <MdLabelOutline className="text-gray-500 text-2xl justify-self-center" />
             <div>
-              <div className="flex flex-wrap gap-1 mb-2">
+              <div className="flex flex-wrap gap-1 mb-2 max-h-24 overflow-y-auto">
                 {tags.map((t, i) => (
                   <span
                     key={i}
-                    className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs flex items-center"
+                    className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-[10px] md:text-xs flex items-center font-bold"
                   >
                     {t}
                     <button
@@ -151,7 +154,7 @@ const EventModal = () => {
                       onClick={() =>
                         setTagsList(tags.filter((tag) => tag !== t))
                       }
-                      className="ml-1 font-bold"
+                      className="ml-1 font-bold text-blue-400 hover:text-blue-800"
                     >
                       ×
                     </button>
@@ -161,24 +164,24 @@ const EventModal = () => {
               <input
                 type="text"
                 placeholder="Add tags (press Enter)"
-                className="pt-1 border-0 text-gray-600 pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:border-blue-500"
+                className="pt-1 border-0 text-gray-600 pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:border-blue-500 text-sm md:text-base"
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
                 onKeyDown={handleAddTag}
               />
             </div>
+
             {/* labels */}
             <FaRegBookmark className="text-gray-500 text-2xl justify-self-center" />
-            <div className="flex gap-x-2">
-              {/* <span className="w-6 h-6 bg-blue-500 rounded-full cursor-pointer"></span> */}
+            <div className="flex flex-wrap gap-2">
               {labelsClasses.map((col, i) => (
                 <span
                   key={i}
                   onClick={() => setSelectedLabel(col)}
-                  className={`w-6 h-6 ${col} rounded-full cursor-pointer`}
+                  className={`w-5 h-5 md:w-6 md:h-6 ${col} rounded-full cursor-pointer transition-transform hover:scale-110 flex items-center justify-center`}
                 >
                   {selectedLabel === col && (
-                    <SiTicktick className="text-gray text-2xl mx-auto" />
+                    <SiTicktick className="text-white text-xs md:text-sm" />
                   )}
                 </span>
               ))}
@@ -187,10 +190,10 @@ const EventModal = () => {
         </div>
 
         {/* Footer - save btn */}
-        <footer className="flex justify-end border-t p-3 mt-5">
+        <footer className="flex justify-end border-t p-3 mt-4 md:mt-5">
           <button
             type="submit"
-            className="bg-blue-600 hover:bg-blue-700 px-8 py-2 rounded-3xl text-white font-bold"
+            className="bg-blue-600 hover:bg-blue-700 px-6 md:px-8 py-2 rounded-3xl text-white font-bold transition-all shadow-md active:scale-95 text-sm md:text-base"
             onClick={handleSubmit}
           >
             Save
