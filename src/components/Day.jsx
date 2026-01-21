@@ -13,13 +13,18 @@ const Day = ({ day, rowIdx }) => {
 
   const daySelected = useSelector((state) => state.calendar.daySelected);
   const savedEvents = useSelector((state) => state.calendar.savedEvents);
+  const labels = useSelector((state) => state.calendar.labels);
 
   useEffect(() => {
-    const events = savedEvents.filter(
-      (event) => dayjs(event.day).format('DD-MM-YY') === day.format('DD-MM-YY')
-    );
+    const events = savedEvents.filter((event) => {
+      const currentLabel = labels.find((lbl) => lbl.label === event.label);
+      return (
+        dayjs(event.day).format('DD-MM-YY') === day.format('DD-MM-YY') &&
+        (currentLabel ? currentLabel.checked : true)
+      );
+    });
     setDayEvents(events);
-  }, [savedEvents, day]);
+  }, [savedEvents, day, labels]);
 
   function getCurrentDayClass() {
     let classes = '';

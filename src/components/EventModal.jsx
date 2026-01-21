@@ -3,6 +3,7 @@ import { MdDragHandle } from 'react-icons/md';
 import { MdClose } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  deleteEvent,
   pushEvent,
   toggleEventModal,
   updateEvent,
@@ -12,6 +13,7 @@ import { RiMenu3Fill } from 'react-icons/ri';
 import { FaRegBookmark } from 'react-icons/fa';
 import dayjs from 'dayjs';
 import { SiTicktick } from 'react-icons/si';
+import { MdDelete } from 'react-icons/md';
 
 const labelsClasses = [
   'bg-indigo-400',
@@ -59,6 +61,16 @@ const EventModal = () => {
     <div className="h-screen w-full fixed left-0 top-0 flex justify-center items-center z-50 bg-black/50">
       <form className="rounded-lg shadow-2xl w-1/4  bg-white">
         <header className="bg-gray px-4 py-2 flex justify-between items-center">
+          {selectedEvent && (
+            <span
+              onClick={() => {
+                dispatch(deleteEvent(selectedEvent));
+                dispatch(toggleEventModal());
+              }}
+            >
+              <MdDelete className="text-2xl" />
+            </span>
+          )}
           <span>
             <MdDragHandle className="text-2xl" />
           </span>
