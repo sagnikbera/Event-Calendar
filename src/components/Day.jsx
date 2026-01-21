@@ -14,17 +14,27 @@ const Day = ({ day, rowIdx }) => {
   const daySelected = useSelector((state) => state.calendar.daySelected);
   const savedEvents = useSelector((state) => state.calendar.savedEvents);
   const labels = useSelector((state) => state.calendar.labels);
+  const tags = useSelector((state) => state.calendar.tags);
 
-  useEffect(() => {
-    const events = savedEvents.filter((event) => {
-      const currentLabel = labels.find((lbl) => lbl.label === event.label);
-      return (
-        dayjs(event.day).format('DD-MM-YY') === day.format('DD-MM-YY') &&
-        (currentLabel ? currentLabel.checked : true)
-      );
-    });
-    setDayEvents(events);
-  }, [savedEvents, day, labels]);
+ useEffect(() => {
+  const events = savedEvents.filter((event) => {
+    const currentLabel = labels.find((lbl) => lbl.label === event.label);
+
+    const eventTags = event.tags || [];
+    const isTagVisible = eventTags.length === 0 || 
+      eventTags.some(t => {
+        const foundTag = tags.find(tagObj => tagObj.tag === t);
+        return foundTag ? foundTag.checked : true;
+      });
+
+    return (
+      dayjs(event.day).format('DD-MM-YY') === day.format('DD-MM-YY') &&
+      (currentLabel ? currentLabel.checked : true) &&
+      isTagVisible
+    );
+  });
+  setDayEvents(events);
+}, [savedEvents, day, labels, tags]);
 
   function getCurrentDayClass() {
     let classes = '';

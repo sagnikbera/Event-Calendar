@@ -11,6 +11,12 @@ const initLabels = () => {
   return storageLabels ? JSON.parse(storageLabels) : [];
 };
 
+const initTags = () => {
+  const storageTags = localStorage.getItem('savedTags');
+  return storageTags ? JSON.parse(storageTags) : [];
+};
+
+
 const initialState = {
   monthIndex: dayjs().month(),
   smallCalendarMonth: null,
@@ -18,6 +24,7 @@ const initialState = {
   showEventModal: false,
   selectedEvent: null,
   labels: initLabels(),
+  tags: initTags(),
   savedEvents: initEvents(),
   showSidebar: true,
 };
@@ -100,6 +107,30 @@ const calendarSlice = createSlice({
       localStorage.setItem('savedLabels', JSON.stringify(state.labels));
     },
 
+    //set tag
+    setTags: (state) => {
+      const allTags = state.savedEvents.flatMap((event) => event.tags || []);
+      const uniqueTags = [...new Set(allTags)];
+      
+      state.tags = uniqueTags.map((tag) => {
+        const currentTag = state.tags.find((t) => t.tag === tag);
+        return {
+          tag,
+          checked: currentTag ? currentTag.checked : true,
+        };
+      });
+      
+      localStorage.setItem('savedTags', JSON.stringify(state.tags));
+    },
+
+    // check uncheck tag 
+    updateTag: (state, action) => {
+      state.tags = state.tags.map((t) =>
+        t.tag === action.payload.tag ? action.payload : t
+      );
+      localStorage.setItem('savedTags', JSON.stringify(state.tags));
+    },
+
     //sidebar in main page
     toggleSidebar: (state) => {
       state.showSidebar = !state.showSidebar;
@@ -117,7 +148,9 @@ export const {
   updateEvent,
   deleteEvent,
   setLabels,
+  setTags,
   updateLabel,
+  updateTag,
   toggleSidebar,
 } = calendarSlice.actions;
 

@@ -5,7 +5,7 @@ import Sidebar from './components/Sidebar';
 import Month from './components/Month';
 import EventModal from './components/EventModal';
 import { useSelector, useDispatch } from 'react-redux';
-import { setLabels } from './store/calendarSlice';
+import { setLabels, setTags } from './store/calendarSlice';
 
 const App = () => {
   // console.table(getMonth());
@@ -23,6 +23,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(setLabels());
+    dispatch(setTags());
   }, [savedEvents, dispatch]);
 
   return (

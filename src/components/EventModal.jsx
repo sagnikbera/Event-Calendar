@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MdDragHandle } from 'react-icons/md';
 import { MdClose } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,6 +14,7 @@ import { FaRegBookmark } from 'react-icons/fa';
 import dayjs from 'dayjs';
 import { SiTicktick } from 'react-icons/si';
 import { MdDelete } from 'react-icons/md';
+import { MdLabelOutline } from 'react-icons/md';
 
 const labelsClasses = [
   'bg-indigo-400',
@@ -27,6 +28,8 @@ const labelsClasses = [
 
 const EventModal = () => {
   const selectedEvent = useSelector((state) => state.calendar.selectedEvent);
+  const [tagInput, setTagInput] = useState('');
+  const [tags, setTagsList] = useState([]);
 
   const [selectedLabel, setSelectedLabel] = useState(
     selectedEvent ? selectedEvent.label : labelsClasses[0]
@@ -38,13 +41,39 @@ const EventModal = () => {
   const daySelected = useSelector((state) => state.calendar.daySelected);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    if (selectedEvent) {
+      setTagsList(selectedEvent.tags || []);
+      setSelectedLabel(selectedEvent.label);
+      setTitle(selectedEvent.title);
+      setDescription(selectedEvent.description);
+    } else {
+      setTagsList([]);
+      setSelectedLabel(labelsClasses[0]);
+      setTitle('');
+      setDescription('');
+    }
+  }, [selectedEvent]);
+
+  const handleAddTag = (e) => {
+    if (e.key === 'Enter' && tagInput.trim() !== '') {
+      e.preventDefault();
+      if (!tags.includes(tagInput.trim())) {
+        setTagsList([...tags, tagInput.trim()]);
+      }
+      setTagInput('');
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!title.trim()) return;
 
     const calendarEvent = {
       title: title,
       description: description,
       label: selectedLabel,
+      tags: [...tags],
       day: selectedEvent ? selectedEvent.day : daySelected,
       id: selectedEvent ? selectedEvent.id : Date.now(), // in case of edit id should be same
     };
@@ -107,6 +136,37 @@ const EventModal = () => {
               onChange={(e) => setDescription(e.target.value)}
             />
 
+            {/* tag  */}
+            <MdLabelOutline className="text-gray-500 text-2xl justify-self-center" />
+            <div>
+              <div className="flex flex-wrap gap-1 mb-2">
+                {tags.map((t, i) => (
+                  <span
+                    key={i}
+                    className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs flex items-center"
+                  >
+                    {t}
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setTagsList(tags.filter((tag) => tag !== t))
+                      }
+                      className="ml-1 font-bold"
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))}
+              </div>
+              <input
+                type="text"
+                placeholder="Add tags (press Enter)"
+                className="pt-1 border-0 text-gray-600 pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:border-blue-500"
+                value={tagInput}
+                onChange={(e) => setTagInput(e.target.value)}
+                onKeyDown={handleAddTag}
+              />
+            </div>
             {/* labels */}
             <FaRegBookmark className="text-gray-500 text-2xl justify-self-center" />
             <div className="flex gap-x-2">
