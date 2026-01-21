@@ -41,6 +41,36 @@ npm install
 npm start
 ```
 
+## 📂 Project Structure
+
+## 📂 Project Structure
+
+````text
+X-Calendar/
+├── public/              # Static assets (index.html, favicon)
+├── src/
+│   ├── components/      # UI Components
+│   │   ├── CalendarHeader.jsx
+│   │   ├── Day.jsx
+│   │   ├── EventModal.jsx
+│   │   ├── Labels.jsx
+│   │   ├── Month.jsx
+│   │   ├── Sidebar.jsx
+│   │   ├── SmallCalendar.jsx
+│   │   └── Tag.jsx
+│   ├── store/           # Redux logic
+│   │   ├── calendarSlice.js
+│   │   └── store.js
+│   ├── utils/           # Helper functions
+│   │   └── dayjs.js
+│   ├── App.jsx          # Main App component
+│   ├── index.css        # Tailwind & global styles
+│   └── main.jsx         # React entry point
+├── package.json         # Dependencies & scripts
+├── tailwind.config.js   # Tailwind configuration
+└── README.md            # Documentation
+
+
 ## 📂 Logic : dayjs
 
 ```js
@@ -63,4 +93,9 @@ export default function getMonth(month = dayjs().month()) {
 
   return dayMatrix;
 }
-```
+````
+
+# X-Calendar 📅
+
+[![Live Demo](https://img.shields.io/badge/demo-live-blue.svg)](https://x-event-cal.vercel.app/)
+[![YouTube Video](https://img.shields.io/badge/youtube-demo-red.svg)](https://youtu.be/ha_NwtbQAbI)
