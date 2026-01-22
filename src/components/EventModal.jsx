@@ -40,6 +40,8 @@ const EventModal = () => {
   const [description, setDescription] = useState(
     selectedEvent ? selectedEvent.description : ''
   );
+
+  // end date
   const [endDate, setEndDate] = useState(
     dayjs(daySelected).format('YYYY-MM-DD')
   );
@@ -50,6 +52,7 @@ const EventModal = () => {
       setSelectedLabel(selectedEvent.label);
       setTitle(selectedEvent.title);
       setDescription(selectedEvent.description || '');
+      // Setting end date in edit mode
       setEndDate(
         dayjs(selectedEvent.endDate || selectedEvent.day).format('YYYY-MM-DD')
       );
@@ -60,7 +63,7 @@ const EventModal = () => {
       setDescription('');
       setEndDate(dayjs(daySelected).format('YYYY-MM-DD'));
     }
-  }, [selectedEvent]);
+  }, [selectedEvent, daySelected]);
 
   const handleAddTag = (e) => {
     if (e.key === 'Enter' && tagInput.trim() !== '') {
@@ -82,8 +85,9 @@ const EventModal = () => {
       label: selectedLabel,
       tags: [...tags],
       day: selectedEvent ? selectedEvent.day : daySelected,
+      // Saving end date as timestamp
       endDate: dayjs(endDate).valueOf(),
-      id: selectedEvent ? selectedEvent.id : Date.now(), // in case of edit id should be same
+      id: selectedEvent ? selectedEvent.id : Date.now(),
     };
 
     if (selectedEvent) {
@@ -140,7 +144,7 @@ const EventModal = () => {
                   'dddd, MMMM DD'
                 )}
               </p>
-              {/* <--- end date */}
+              {/* End date picker input */}
               <div className="flex items-center gap-2">
                 <span className="text-xs text-gray-400 font-bold">
                   Ends on:
@@ -199,7 +203,6 @@ const EventModal = () => {
             {/* labels */}
             <FaRegBookmark className="text-gray-500 text-2xl justify-self-center" />
             <div className="flex flex-wrap gap-2">
-              {/* avoid conflic */}
               {labelsClasses.map((col, i) => (
                 <span
                   key={i}
@@ -211,7 +214,7 @@ const EventModal = () => {
                   )}
                 </span>
               ))}
-              {/* (Hex Code)  */}
+              {/* Hex Code Support*/}
               {selectedEvent?.label.startsWith('#') &&
                 !labelsClasses.includes(selectedLabel) && (
                   <span

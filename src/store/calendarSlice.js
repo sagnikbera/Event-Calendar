@@ -4,7 +4,10 @@ import { instructorEvents } from '../data/data';
 
 const initEvents = () => {
   const storageEvents = localStorage.getItem('savedEvents');
-  const parsedEvent = storageEvents ? JSON.parse(storageEvents) : [];
+
+  if (storageEvents) {
+    return JSON.parse(storageEvents);
+  }
 
   const processedEvents = instructorEvents.map((event, index) => ({
     id: `ext-${index}`,
@@ -16,9 +19,9 @@ const initEvents = () => {
     tags: [],
   }));
 
-  return [...processedEvents, ...parsedEvent];
+  localStorage.setItem('savedEvents', JSON.stringify(processedEvents));
+  return processedEvents;
 };
-
 const initLabels = () => {
   const storageLabels = localStorage.getItem('savedLabels');
   return storageLabels ? JSON.parse(storageLabels) : [];

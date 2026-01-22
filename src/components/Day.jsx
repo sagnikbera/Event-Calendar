@@ -80,32 +80,45 @@ const Day = ({ day, rowIdx }) => {
         </p>
       </header>
       <div
-        className="flex-1 cursor-pointer overflow-y-auto px-1"
+        className="flex-1 cursor-pointer overflow-y-auto"
         onClick={() => {
           dispatch(setDaySelected(day.valueOf()));
           dispatch(toggleEventModal());
         }}
       >
-        {dayEvents.map((event, index) => (
-          <div
-            key={index}
-            onClick={(e) => {
-              e.stopPropagation();
-              dispatch(setSelectedEvent(event));
-              dispatch(toggleEventModal());
-            }}
-            // hex color code
-            style={{
-              backgroundColor: event.label.startsWith('#') ? event.label : '',
-              color: 'white',
-            }}
-            // Tailwind class
-            className={`${!event.label.startsWith('#') ? event.label : ''} p-1 mr-1 text-[10px] md:text-sm rounded mb-1 truncate font-bold shadow-sm`}
-          >
-            {/* { console.log(event.label)} */}
-            {event.title}
-          </div>
-        ))}
+        {dayEvents.map((event, index) => {
+          //  Check if this day is start, end, or middle
+          const isStart = day.isSame(dayjs(event.day), 'day');
+          const isEnd = day.isSame(dayjs(event.endDate), 'day');
+
+          return (
+            <div
+              key={index}
+              onClick={(e) => {
+                e.stopPropagation();
+                dispatch(setSelectedEvent(event));
+                dispatch(toggleEventModal());
+              }}
+              // hex color code
+              style={{
+                backgroundColor: event.label.startsWith('#') ? event.label : '',
+                color: 'white',
+              }}
+              // Tailwind class
+              // Conditional rounding and margins for the beam
+              className={`
+                ${!event.label.startsWith('#') ? event.label : ''} 
+                p-1 text-[10px] md:text-sm mb-1 truncate font-bold shadow-sm flex items-center h-6
+                ${isStart ? 'rounded-l-md ml-1' : 'ml-0'} 
+                ${isEnd ? 'rounded-r-md mr-1' : 'mr-0'}
+                ${!isStart && !isEnd ? 'rounded-none' : ''}
+              `}
+            >
+              {/* Title only visible on start day */}
+              {isStart && <span>{event.title}</span>}
+            </div>
+          );
+        })}
       </div>
       <div className="cursor-pointer">{/*event list*/}</div>
     </div>

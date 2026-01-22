@@ -30,7 +30,7 @@ const Labels = () => {
         return (
           <label
             key={idx}
-            className="flex items-center mt-2 cursor-pointer group"
+            className="flex items-center mt-1 cursor-pointer group"
           >
             <input
               type="checkbox"
